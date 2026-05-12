@@ -3,7 +3,7 @@
 	--page-bg: #ffffff;
 	--button-bg: #eeeeee;
 	--button-text: #222222;
-	--button-border: #888888;
+	--border: #888888;
 }
 
 /* main page settings */
@@ -25,6 +25,12 @@ body {
 	align-items: center;
 }
 
+/* text */
+body { font-size: 1.5em; }
+p {
+	margin-block: 0;
+}
+
 /* page components */
 div#bottom {
 	position: absolute;
@@ -44,6 +50,10 @@ div.tab {
 div.panel {
 	display: flex;
 	gap: 8px;
+}
+
+div.icon {
+	border: 2px solid var(--border);
 }
 
 /* class modifiers */

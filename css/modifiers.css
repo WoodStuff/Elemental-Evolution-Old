@@ -1,0 +1,12 @@
+.short  { width: 100px;  }
+.swide  { width: 175px;  }
+.wide   { width: 200px;  }
+.xwide  { width: 250px;  }
+.xxwide { width: 300px;  }
+.low    { height: 75px;  }
+.stall  { height: 125px; }
+.tall   { height: 150px; }
+.xtall  { height: 200px; }
+.xxtall { height: 250px; }
+.small  { font-size: 0.67em; }
+.big    { font-size: 1.33em; }

@@ -7,26 +7,12 @@ button {
 	font-size: 0.9em;
 	background-color: var(--button-bg);
 	color: var(--button-text);
-	border: 2px solid var(--button-border);
+	border: 2px solid var(--border);
 	border-radius: 4px;
 }
 button:hover    { background-color: #f6f6f6; }
 button:active   { background-color: #e2e2e2; }
 button:disabled { background-color: #d0d0d0; }
-
-/* class modifiers */
-button.short  { width: 100px;  }
-button.swide  { width: 175px;  }
-button.wide   { width: 200px;  }
-button.xwide  { width: 250px;  }
-button.xxwide { width: 300px;  }
-button.low    { height: 75px;  }
-button.stall  { height: 125px; }
-button.tall   { height: 150px; }
-button.xtall  { height: 200px; }
-button.xxtall { height: 250px; }
-button.small  { font-size: 0.67em; }
-button.big    { font-size: 1.33em; }
 
 /* miscellaneous button contents */
 button > div.progress {
@@ -47,7 +33,7 @@ button > div.amount {
 	justify-content: center;
 
 	background-color: var(--button-bg);
-	border: 2px solid var(--button-border);
+	border: 2px solid var(--border);
 	border-radius: 20px;
 
 	padding: 4px;

@@ -7,19 +7,30 @@ let TIMERS = [];
 
 let hydrogen = {
 	value: 0,
+
 	cooldown: false,
 
 	up_efficiency: 0,
 	up_cooldown: 0,
 
-	mid_gather: () => (3 + hydrogen.up_efficiency) * Math.pow(1.1, hydrogen.up_efficiency),
+	deuterium: 0,
+	to_next_deuterium: 1000,
+
+	mid_gather: () => (3 + hydrogen.up_efficiency) * Math.pow(1.04, hydrogen.up_efficiency),
 	min_gather: () => Math.round(0.75 * hydrogen.mid_gather()),
 	max_gather: () => Math.round(1.25 * hydrogen.mid_gather()),
 	gather: () => rng(hydrogen.min_gather(), hydrogen.max_gather()),
 	cooldown_time: () => 2000 * (Math.pow(0.8, hydrogen.up_cooldown)),
+	gather_per_second: () => hydrogen.mid_gather() / hydrogen.cooldown_time() * 1000,
+	generation: () => 0,
 
 	up_efficiency_cost: () => Math.round(Math.pow(1.25, hydrogen.up_efficiency) * 10),
 	up_cooldown_cost: () => Math.round(Math.pow(1.5, hydrogen.up_cooldown) * 40),
+
+	add(amount) {
+		hydrogen.value += amount;
+		if (hydrogen.deuterium > 0 && amount > 0) hydrogen.to_next_deuterium -= amount;
+	}
 };
 
 function start() {
@@ -31,6 +42,11 @@ function start() {
 	$("H-button").addEventListener("click", searchHydrogen);
 	$("H-efficiency").addEventListener("click", upgradeEfficiency);
 	$("H-cooldown").addEventListener("click", upgradeCooldown);
+
+	// temporary
+	hydrogen.value = 1000;
+	hydrogen.up_efficiency = 18;
+	hydrogen.up_cooldown = 7;
 }
 
 function searchHydrogen() {
@@ -39,7 +55,7 @@ function searchHydrogen() {
 	const text = $("H-button-text").textContent;
 	const timer = new Timer(() => {
 		hydrogen.cooldown = false;
-		hydrogen.value += hydrogen.gather();
+		hydrogen.add(hydrogen.gather());
 		$("H-button-text").textContent = text;
 	}, hydrogen.cooldown_time(), $("H-button-text"));
 	TIMERS.push(timer);
@@ -67,17 +83,19 @@ function progressBar() {
 	progress.addEventListener("transitionend", () => {
 		progress.style.transition = "0s";
 		progress.style.width = "0%";
-	});
+	}, { once: true });
 }
 
 function updateStats_JS() {
+	hydrogen.value += hydrogen.generation() / TPS;
+
 	TIMERS = TIMERS.filter(t => t.getRemainingTime() > 0);
 	TIMERS.forEach(timer => {
 		timer.element.textContent = timer.formatRemainingTime();
 	});
 }
 function updateStats_HTML() {
-	$("H-value").textContent = hydrogen.value;
+	$("H-value").textContent = Math.floor(hydrogen.value);
 	$("H-button").disabled = hydrogen.cooldown;
 	$("H-button-min").textContent = hydrogen.min_gather();
 	$("H-button-max").textContent = hydrogen.max_gather();
